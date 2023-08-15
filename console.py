@@ -7,14 +7,7 @@ import re
 
 
 class HBNBCommand(cmd.Cmd):
-    """entry point of the command interpreter
-
-    Args:
-        cmd (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
+    """Command interpreter class"""
 
     prompt = "(hbnb) "
 
@@ -42,6 +35,7 @@ class HBNBCommand(cmd.Cmd):
                 storage.all()[key].save()
 
     def adv_parser(self, arg):
+        """Rearranges commands of syntax class.< command >()"""
         match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", arg)
         if not match:
             return arg
@@ -77,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
         if response == arg:
             print("*** Unknown syntax:", arg)
 
-    def cmd_count(self, arg):
+    def do_count(self, arg):
         """Retrieves the number of instances of a class
         Usage: <class name>.count()"""
         objs = storage.all()
@@ -94,7 +88,8 @@ class HBNBCommand(cmd.Cmd):
                     instances += 1
             print(instances)
 
-    def cmd_create(self, arg):
+    # --- More functionality (console 0.1.0) ---
+    def do_create(self, arg):
         """Creates a new instance of a class"""
         if arg == "" or arg is None:
             print("** class name missing **")
@@ -105,7 +100,7 @@ class HBNBCommand(cmd.Cmd):
             base1.save()
             print(base1.id)
 
-    def cmd_show(self, arg):
+    def do_show(self, arg):
         """Prints the string representation of an instance"""
         objs = storage.all()
         args = self.parse(arg)
@@ -117,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         print("** no instance found **")
 
-    def cmd_destroy(self, arg):
+    def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
         objs = storage.all()
         args = self.parse(arg)
@@ -130,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         print("** no instance found **")
 
-    def cmd_update(self, arg):
+    def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         objs = storage.all()
         args = self.parse(arg)
@@ -177,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(storage.all()[key], attribute, value)
                 storage.all()[key].save()
 
-    def cmd_all(self, arg):
+    def do_all(self, arg):
         """Prints all string representation of all instances"""
         objs = storage.all()
         objs_list = []
@@ -196,12 +191,12 @@ class HBNBCommand(cmd.Cmd):
             print(objs_list)
 
     # --- Basic functionality (console 0.0.1) ---
-    def cmd_EOF(self, *arg):
+    def do_EOF(self, *arg):
         """Exits program at EOF"""
         print()
         return True
 
-    def cmd_quit(self, *arg):
+    def do_quit(self, *arg):
         """QUIT command that exits the program"""
         return True
 
@@ -227,3 +222,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
